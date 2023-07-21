@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.DriverManager"%>
@@ -31,7 +32,6 @@ try{
 	con= DriverManager.getConnection(url,user,password);
 	PreparedStatement ps= con.prepareStatement(query);
 	long acc_number =Long.parseLong((String)request.getParameter("accno"));
-	
 	 st =con.createStatement();
 	 rs=st.executeQuery("select max(sno)+1 from Banking_reg");
 	while (rs.next()) {
@@ -49,12 +49,21 @@ try{
 	ps.setString(4, city);
 	ps.setString(5, state);
 	ps.setString(6, neft);
-	if(acc_count < 1){
+	
+	String query = "select * from Banking_reg where accout_number = "+acc_number;
+	rs=st.executeQuery(query);
+	
+	ArrayList al = new ArrayList();
+	while(rs.next()){
+		al.add(rs.getLong(1));
+	} 
+	
+	if(al.size() < 1){
 	i = ps.executeUpdate();
 	}
 	else{
 		%>
-		<h1>This <%=request.getParameter("acc_number") %> already exist </h1>
+		<h1>This <%=request.getParameter("accno") %> already exist </h1>
 		<% 
 	}
 	if(i>0){
@@ -73,5 +82,7 @@ try{
 }
 
 %>
+<br>
+<a href="ret.jsp">Click here to see all the values</a>
 </body>
 </html>

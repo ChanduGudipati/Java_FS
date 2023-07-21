@@ -6,7 +6,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 </head>
+<%!
+String s ;
+%>
+<%
+try{
+    s = request.getAttribute("msg").toString();
+}catch(Exception e){
+	
+}
+   if(s == null || s.isEmpty() || s.equals(null))
+	   s = "insert the values here";
+%>
 <body>
+<h1 style="color: green;"><%= s %></h1>
 <form action="reg.jsp" method="post">
 <table>
 <tr>
